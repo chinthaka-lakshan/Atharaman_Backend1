@@ -7,31 +7,32 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "Guide")
-public class Guide {
+@Table(name = "Hotel")
+public class Hotel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column (name = "guide_name")
-    private String guideName;
+    @Column (name = "hotel_name")
+    private String hotelName;
 
     @Column (name = "business_mail")
     private String businessMail;
 
     @Column (name = "personal_number")
-    private String personalNomber;
+    private String contactNumber;
 
     @Column (name = "whatsapp_number")
     private String whatsappNumber;
 
-    @Column (name = "languages")
-    private List<String> languages;
+    @Column (name = "locations")
+    private List<String> locations;
 
-    @Column (name = "description")
-    private String description;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "hotel_owner_id",referencedColumnName = "id")
+    private HotelOwner hotelOwner;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
