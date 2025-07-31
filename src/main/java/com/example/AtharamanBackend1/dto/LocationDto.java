@@ -7,7 +7,7 @@ import lombok.ToString;
 @Data
 @ToString
 @NoArgsConstructor
-public class LocationModel {
+public class LocationDto {
     private Long id;
     private String mainImage;
     private String extraImage1;
