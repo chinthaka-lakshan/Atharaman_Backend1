@@ -1,5 +1,6 @@
 package com.example.AtharamanBackend1.entity;
 
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -7,26 +8,27 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "Guide")
-public class Guide {
+@Table(name = "VehicleOwner")
+public class VehicleOwner {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column (name = "guide_name")
-    private String guideName;
+    @Column (name = "vehicle_owner_name")
+    private String ownerName;
 
     @Column (name = "business_mail")
     private String businessMail;
 
     @Column (name = "personal_number")
-    private String personalNomber;
+    private String personalNumber;
 
-    @Column (name = "whatsapp_number")
+    @Column (name ="whatsapp_number")
     private String whatsappNumber;
 
-    @Column (name = "languages")
-    private List<String> languages;
+    @Column (name = "locations")
+    private List<String> locations;
 
     @Column (name = "description")
     private String description;
@@ -34,5 +36,6 @@ public class Guide {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
 
 }
