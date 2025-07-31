@@ -1,7 +1,7 @@
 package com.example.AtharamanBackend1.service.impl;
 
 import com.example.AtharamanBackend1.entity.Location;
-import com.example.AtharamanBackend1.dto.LocationModel;
+import com.example.AtharamanBackend1.dto.LocationDto;
 import com.example.AtharamanBackend1.repository.LocationRepository;
 import com.example.AtharamanBackend1.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +16,11 @@ public class LocationServiceImpl implements LocationService {
     private LocationRepository locationRepository;
 
     @Override
-    public List<LocationModel> getAllLocations() {
+    public List<LocationDto> getAllLocations() {
         List<Location> locations = locationRepository.findAll();
 
         return locations.stream().map(location -> {
-            LocationModel model = new LocationModel();
+            LocationDto model = new LocationDto();
             model.setId(location.getId());
             model.setMainImage(location.getMainImage());
             model.setExtraImage1(location.getExtraImage1());
