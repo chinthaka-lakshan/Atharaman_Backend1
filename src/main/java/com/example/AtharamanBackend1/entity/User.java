@@ -35,4 +35,11 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Hotel> hotels;
 
+    @OneToOne(mappedBy = "user")
+    private ShopOwner shopOwner;
+
+    @OneToMany(mappedBy = "user")
+    private List<Shop> shops;
+
 }
+
