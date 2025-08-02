@@ -1,4 +1,7 @@
 package com.example.AtharamanBackend1.repository;
 
-public interface UserRepository {
+import com.example.AtharamanBackend1.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Long> {
 }
