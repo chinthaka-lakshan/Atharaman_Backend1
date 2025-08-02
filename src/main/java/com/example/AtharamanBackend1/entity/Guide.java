@@ -20,7 +20,7 @@ public class Guide {
     private String businessMail;
 
     @Column (name = "personal_number")
-    private String personalNomber;
+    private String personalNumber;
 
     @Column (name = "whatsapp_number")
     private String whatsappNumber;
