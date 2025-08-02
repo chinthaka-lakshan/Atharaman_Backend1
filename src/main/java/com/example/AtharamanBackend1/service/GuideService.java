@@ -8,7 +8,9 @@ public interface GuideService {
     GuideDto createGuide(GuideDto guideDto);
     List<GuideDto> getAllGuides();
     GuideDto getGuideById(Long id);
-//    GuideDto updateGuideById(Long id, GuideDto guideDto);
+    GuideDto updateGuideById(Long id, GuideDto guideDto);
+    void deleteGuideById(Long id);
+
 
 
 }

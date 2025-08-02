@@ -52,11 +52,32 @@ public class GuideServiceImpl implements GuideService {
         return convertToDto(guide);
     }
 
-//    @Override
-//    public GuideDto updateGuideById(GuideDto guideDto) {
-//        Guide guide = guideRepository.u
-//
-//    }
+    @Override
+    public GuideDto updateGuideById(Long id,GuideDto guideDto) {
+        Guide guide = guideRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Guide Not Found"));
+        guide.setGuideName(guideDto.getGuideName());
+        guide.setBusinessMail(guideDto.getBusinessMail());
+        guide.setPersonalNumber(guideDto.getPersonalNumber());
+        guide.setWhatsappNumber(guideDto.getWhatsappNumber());
+        guide.setLanguages(guideDto.getLanguages());
+        guide.setDescription(guideDto.getDescription());
+
+        guideRepository.save(guide);
+        return convertToDto(guide);
+    }
+
+    @Override
+    public void deleteGuideById(Long id){
+        Guide guide = guideRepository.findById(id)
+                        .orElseThrow(()-> new RuntimeException("Guide Not Found"));
+        if (guide.getUser() != null) {
+            User user = guide.getUser();
+            user.setGuide(null);
+            guide.setUser(null);
+        }
+        guideRepository.delete(guide);
+    }
 
     private GuideDto convertToDto(Guide guide) {
         GuideDto dto = new GuideDto();
@@ -74,8 +95,4 @@ public class GuideServiceImpl implements GuideService {
         }
         return dto;
     }
-
-
-
-
 }

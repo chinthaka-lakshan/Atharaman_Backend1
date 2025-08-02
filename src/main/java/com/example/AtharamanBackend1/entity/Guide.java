@@ -31,7 +31,7 @@ public class Guide {
     @Column (name = "description")
     private String description;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 

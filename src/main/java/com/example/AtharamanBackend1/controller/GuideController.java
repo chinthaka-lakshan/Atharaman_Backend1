@@ -3,6 +3,7 @@ package com.example.AtharamanBackend1.controller;
 import com.example.AtharamanBackend1.dto.GuideDto;
 import com.example.AtharamanBackend1.service.GuideService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,5 +25,16 @@ public class GuideController {
     @GetMapping("/{id}")
     public GuideDto getGuide(@PathVariable Long id){
         return guideService.getGuideById(id);
+    }
+
+    @PutMapping("/{id}")
+    public GuideDto updateGuide(@RequestBody GuideDto guideDto, @PathVariable Long id){
+        return guideService.updateGuideById(id, guideDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteGuide(@PathVariable Long id){
+        guideService.deleteGuideById(id);
+        return ResponseEntity.ok("Success");
     }
 }
