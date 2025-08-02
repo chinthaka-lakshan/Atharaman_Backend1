@@ -16,6 +16,9 @@ public class HotelOwner {
     @Column (name = "hotel_owner_name")
     private String ownerName;
 
+    @Column (name = "hotel_owner_nic")
+    private String hotelOwnerNic;
+
     @Column (name = "business_mail")
     private String businessMail;
 
