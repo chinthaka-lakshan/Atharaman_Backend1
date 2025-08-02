@@ -16,7 +16,7 @@ public class VehicleOwner {
     private Long id;
 
     @Column (name = "vehicle_owner_name")
-    private String ownerName;
+    private String vehicleOwnerName;
 
     @Column (name = "business_mail")
     private String businessMail;
