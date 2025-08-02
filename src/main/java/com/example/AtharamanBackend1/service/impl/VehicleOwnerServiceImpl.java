@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class VehicleOwnerServiceImpl implements VehicleOwnerService {
     @Autowired
@@ -35,5 +38,63 @@ public class VehicleOwnerServiceImpl implements VehicleOwnerService {
         VehicleOwner savedVehicleOwner = vehicleOwnerRepository.save(vehicleOwner);
         vehicleOwnerDto.setId(savedVehicleOwner.getId());
         return vehicleOwnerDto;
+    }
+
+    @Override
+    public List<VehicleOwnerDto> getAllVehicleOwners() {
+        return vehicleOwnerRepository.findAll().stream()
+                .map(this::cobvertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public VehicleOwnerDto getVehicleOwnerById(Long id) {
+        VehicleOwner vehicleOwner = vehicleOwnerRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Vehicle Owner Not Found"));
+        return cobvertToDto(vehicleOwner);
+    }
+
+    @Override
+    public VehicleOwnerDto updateVehicleOwner(VehicleOwnerDto vehicleOwnerDto) {
+        VehicleOwner vehicleOwner = new VehicleOwner();
+        vehicleOwner.setVehicleOwnerName(vehicleOwnerDto.getVehicleOwnerName());
+        vehicleOwner.setBusinessMail(vehicleOwnerDto.getBusinessMail());
+        vehicleOwner.setPersonalNumber(vehicleOwnerDto.getPersonalNumber());
+        vehicleOwner.setWhatsappNumber(vehicleOwnerDto.getWhatsappNumber());
+        vehicleOwner.setLocations(vehicleOwnerDto.getLocations());
+        vehicleOwner.setDescription(vehicleOwnerDto.getDescription());
+
+        vehicleOwnerRepository.save(vehicleOwner);
+        return  cobvertToDto(vehicleOwner);
+    }
+
+    @Override
+    public void deleteVehicleOwnerById(Long id) {
+        VehicleOwner vehicleOwner = vehicleOwnerRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Vehicle Owner Not Found"));
+        if(vehicleOwner.getUser()!=null){
+            User user = vehicleOwner.getUser();
+            user.setVehicleOwner(null);
+            vehicleOwner.setUser(null);
+        }
+        vehicleOwnerRepository.delete(vehicleOwner);
+    }
+
+    private VehicleOwnerDto cobvertToDto(VehicleOwner vehicleOwner) {
+        VehicleOwnerDto vehicleOwnerDto = new VehicleOwnerDto();
+        vehicleOwnerDto.setId(vehicleOwner.getId());
+        vehicleOwnerDto.setVehicleOwnerName(vehicleOwner.getVehicleOwnerName());
+        vehicleOwnerDto.setBusinessMail(vehicleOwner.getBusinessMail());
+        vehicleOwnerDto.setPersonalNumber(vehicleOwner.getPersonalNumber());
+        vehicleOwnerDto.setWhatsappNumber(vehicleOwner.getWhatsappNumber());
+        vehicleOwnerDto.setLocations(vehicleOwner.getLocations());
+        vehicleOwnerDto.setDescription(vehicleOwner.getDescription());
+        if(vehicleOwner.getUser()!=null){
+            vehicleOwnerDto.setUser_id(vehicleOwner.getUser().getId());
+        }else {
+            vehicleOwnerDto.setUser_id(null);
+        }
+        return vehicleOwnerDto;
+
     }
 }
