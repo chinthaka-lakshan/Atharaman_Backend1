@@ -25,11 +25,14 @@ public class Hotel {
     @Column (name = "whatsapp_number")
     private String whatsappNumber;
 
+    @Column (name = "nic_number")
+    private String nicNumber;
+
     @Column (name = "locations")
     private List<String> locations;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "hotel_owner_id",referencedColumnName = "id")
+    @JoinColumn(name = "hotelOwner_id",referencedColumnName = "id")
     private HotelOwner hotelOwner;
 
     @ManyToOne(cascade = CascadeType.ALL)
