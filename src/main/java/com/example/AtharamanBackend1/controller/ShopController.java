@@ -32,4 +32,4 @@ public class ShopController {
         shopService.deleteShopById(id);
         return ResponseEntity.ok("Success");
     }
-}
+} 
