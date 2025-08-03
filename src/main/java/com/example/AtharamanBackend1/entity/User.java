@@ -81,7 +81,5 @@ public class User implements UserDetails {
     private ShopOwner shopOwner;
 
     @OneToMany(mappedBy = "user")
-    private List<Shop> shops;
-
+    private List<Shop>shops;
 }
-
