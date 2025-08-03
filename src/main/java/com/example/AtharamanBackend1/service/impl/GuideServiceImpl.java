@@ -31,7 +31,8 @@ public class GuideServiceImpl implements GuideService {
         guide.setLanguages(guideDto.getLanguages());
         guide.setDescription(guideDto.getDescription());
 
-        User user = userRepository.findById(guideDto.getUser_id()).orElseThrow(() ->new RuntimeException("User not found"));
+        User user = userRepository.findById(guideDto.getUser_id())
+                .orElseThrow(() ->new RuntimeException("User not found"));
         guide.setUser(user);
 
         Guide savedGuide = guideRepository.save(guide);

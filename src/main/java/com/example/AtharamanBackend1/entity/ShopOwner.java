@@ -18,8 +18,8 @@ public class ShopOwner {
     @Column(name = "shopOwnerName")
     private String shopOwnerName;
 
-    @Column(name = "nic")
-    private String nic;
+    @Column(name = "shopOwnerNic")
+    private String shopOwnerNic;
 
     @Column(name = "businessMail")
     private String businessMail;
