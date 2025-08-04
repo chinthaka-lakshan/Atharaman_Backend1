@@ -10,6 +10,7 @@ public class ItemDto {
     private String itemName;
     private String description;
     private Double price;
+    private List<String> locations;
     private List<String> imagePaths;
     private Long shop_id;
 }

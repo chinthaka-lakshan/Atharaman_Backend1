@@ -20,6 +20,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class VehicleServiceImpl implements VehicleService {
@@ -41,6 +42,7 @@ public class VehicleServiceImpl implements VehicleService {
         vehicle.setMileagePerDay(vehicleDto.getMileagePerDay());
         vehicle.setWithDriver(vehicleDto.getWithDriver());
         vehicle.setDescription(vehicleDto.getDescription());
+        vehicle.setLocations(vehicleDto.getLocations());
 
         User user =userRepository.findById(vehicleDto.getUser_id())
                 .orElseThrow(()-> new RuntimeException("User Not Found"));
@@ -68,6 +70,14 @@ public class VehicleServiceImpl implements VehicleService {
         vehicleDto.setId(savedVehicle.getId());
         return vehicleDto;
     }
+
+    @Override
+    public List<VehicleDto> getAllVehicles(){
+        return vehicleRepository.findAll().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
     @Override
     public VehicleDto vehicleGetById(Long id){
         Vehicle vehicle = vehicleRepository.findById(id)
@@ -85,6 +95,7 @@ public class VehicleServiceImpl implements VehicleService {
         vehicle.setMileagePerDay(vehicleDto.getMileagePerDay());
         vehicle.setWithDriver(vehicleDto.getWithDriver());
         vehicle.setDescription(vehicleDto.getDescription());
+        vehicle.setLocations(vehicleDto.getLocations());
 
         List<String> imagePaths = new ArrayList<>();
         if (images != null && images.length > 0) {
@@ -106,6 +117,23 @@ public class VehicleServiceImpl implements VehicleService {
         return vehicleDto;
     }
 
+    @Override
+    public void deleteVehicleById(Long id){
+        Vehicle vehicle = vehicleRepository.findById(id)
+                .orElseThrow(()->new RuntimeException("Vehicle Not Found"));
+        if (vehicle.getUser() != null) {
+            User user = vehicle.getUser();
+            user.setGuide(null);
+            vehicle.setUser(null);
+        }
+        if(vehicle.getVehicleOwner() != null){
+            VehicleOwner vehicleOwner = vehicle.getVehicleOwner();
+            vehicleOwner.setVehicles(null);
+            vehicle.setVehicleOwner(null);
+        }
+        vehicleRepository.delete(vehicle);
+    }
+
     public VehicleDto convertToDto(Vehicle vehicle) {
         VehicleDto dto = new VehicleDto();
         dto.setId(vehicle.getId());
@@ -114,6 +142,7 @@ public class VehicleServiceImpl implements VehicleService {
         dto.setMileagePerDay(vehicle.getMileagePerDay());
         dto.setWithDriver(vehicle.getWithDriver());
         dto.setDescription(vehicle.getDescription());
+        dto.setLocations(vehicle.getLocations());
         dto.setImagePaths(vehicle.getImagePaths());
 
         if (vehicle.getUser() != null) {

@@ -36,6 +36,7 @@ public class ItemServiceImpl implements ItemService {
         item.setItemName(itemDto.getItemName());
         item.setDiscription(itemDto.getDescription());
         item.setPrice(itemDto.getPrice());
+        item.setLocations(itemDto.getLocations());
 
         Shop shop = shopRepository.findById(itemDto.getShop_id()).orElseThrow(() -> new RuntimeException("Shop not found"));
         item.setShop(shop);
@@ -80,6 +81,7 @@ public class ItemServiceImpl implements ItemService {
         item.setItemName(itemDto.getItemName());
         item.setDiscription(itemDto.getDescription());
         item.setPrice(itemDto.getPrice());
+        item.setLocations(itemDto.getLocations());
 
         List<String> imagePaths = new ArrayList<>();
         if (images != null && images.length > 0) {
@@ -122,6 +124,7 @@ public class ItemServiceImpl implements ItemService {
         dto.setDescription(item.getDiscription());
         dto.setImagePaths(item.getImagePaths());
         dto.setPrice(item.getPrice());
+        dto.setLocations(item.getLocations());
         if (item.getShop() != null) {
             dto.setShop_id(item.getShop().getId());
         } else {

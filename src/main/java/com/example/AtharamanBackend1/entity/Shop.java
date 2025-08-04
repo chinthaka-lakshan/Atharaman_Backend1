@@ -18,8 +18,8 @@ public class Shop {
     @Column(name = "shopName")
     private String shopName;
 
-    @Column(name = "location")
-    private List<String> location;
+    @Column(name = "locations")
+    private List<String> locations;
 
     @Column(name = "description")
     private String description;

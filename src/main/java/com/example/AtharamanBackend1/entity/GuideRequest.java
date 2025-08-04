@@ -1,17 +1,23 @@
 package com.example.AtharamanBackend1.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Entity
 @Data
-@Table(name = "Guide")
-public class Guide {
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "guide_request")
+public class GuideRequest {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
 
     @Column (name = "guide_name")
     private String guideName;
@@ -31,18 +37,13 @@ public class Guide {
     @Column (name = "description")
     private String description;
 
-    @Column (name = "locations")
-    private List<String> locations;
-
-    @Column (name = "image")
-    @ElementCollection
-    private List<String> imagePaths;
-
-    @Column(name = "locations")
-    private List<String> locations;
-
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @Enumerated(EnumType.STRING)
+    private RequestStatus status = RequestStatus.PENDING;
+
+
 
 }

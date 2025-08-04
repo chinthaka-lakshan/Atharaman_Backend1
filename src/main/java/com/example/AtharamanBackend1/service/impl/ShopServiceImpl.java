@@ -38,7 +38,7 @@ public class ShopServiceImpl implements ShopService {
     public ShopDto createShop(ShopDto shopDto, MultipartFile[] images)throws IOException {
         Shop shop = new Shop();
         shop.setShopName(shopDto.getShopName());
-        shop.setLocation(shopDto.getLocation());
+        shop.setLocations(shopDto.getLocations());
         shop.setDescription(shopDto.getDescription());
 
         User user = userRepository.findById(shopDto.getUser_id())
@@ -88,7 +88,7 @@ public class ShopServiceImpl implements ShopService {
         Shop shop = shopRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Shop Not Found"));
         shop.setShopName(shopDto.getShopName());
-        shop.setLocation(shopDto.getLocation());
+        shop.setLocations(shopDto.getLocations());
         shop.setDescription(shopDto.getDescription());
 
         List<String> imagePaths = new ArrayList<>();
@@ -129,7 +129,7 @@ public class ShopServiceImpl implements ShopService {
         ShopDto dto = new ShopDto();
         dto.setId(shop.getId());
         dto.setShopName(shop.getShopName());
-        dto.setLocation(shop.getLocation());
+        dto.setLocations(shop.getLocations());
         dto.setDescription(shop.getDescription());
         if (shop.getUser() != null) {
             dto.setUser_id(shop.getUser().getId());

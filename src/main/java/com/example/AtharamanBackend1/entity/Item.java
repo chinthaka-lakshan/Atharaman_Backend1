@@ -23,6 +23,9 @@ public class Item {
     @Column(name = "price")
     private Double price;
 
+    @Column(name = "locations")
+    private List<String> locations;
+
     @Column (name = "image")
     @ElementCollection
     private List<String> imagePaths;
