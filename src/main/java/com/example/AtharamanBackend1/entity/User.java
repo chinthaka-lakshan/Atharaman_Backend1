@@ -83,5 +83,8 @@ public class User{
     @OneToMany(mappedBy = "user")
     private List<Shop> shops;
 
+    @OneToMany(mappedBy = "user")
+    private List<Vehicle> vehicles;
+
 }
 

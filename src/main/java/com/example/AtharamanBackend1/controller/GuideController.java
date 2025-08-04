@@ -28,6 +28,7 @@ public class GuideController {
     public List<GuideDto> getAllGuides() {
         return guideService.getAllGuides();
     }
+
     @GetMapping("/{id}")
     public GuideDto getGuide(@PathVariable Long id){
         return guideService.getGuideById(id);

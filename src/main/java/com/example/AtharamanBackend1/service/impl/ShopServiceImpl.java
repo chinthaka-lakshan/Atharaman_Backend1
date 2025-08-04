@@ -92,9 +92,6 @@ public class ShopServiceImpl implements ShopService {
         dto.setShopName(shop.getShopName());
         dto.setLocation(shop.getLocation());
         dto.setDescription(shop.getDescription());
-
-
-
         if (shop.getUser() != null) {
             dto.setUser_id(shop.getUser().getId());
         } else {
