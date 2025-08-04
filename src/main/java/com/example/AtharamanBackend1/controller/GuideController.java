@@ -1,6 +1,7 @@
 package com.example.AtharamanBackend1.controller;
 
 import com.example.AtharamanBackend1.dto.GuideDto;
+import com.example.AtharamanBackend1.dto.VehicleDto;
 import com.example.AtharamanBackend1.service.GuideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -34,9 +35,12 @@ public class GuideController {
         return guideService.getGuideById(id);
     }
 
-    @PutMapping("/{id}")
-    public GuideDto updateGuide(@RequestBody GuideDto guideDto, @PathVariable Long id){
-        return guideService.updateGuideById(id, guideDto);
+    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
+    public GuideDto updateGuide(
+            @PathVariable Long id,
+            @RequestPart ("guide") GuideDto guideDto,
+            @RequestPart(value = "images", required = false) MultipartFile[] images)throws IOException{
+        return guideService.updateGuideById(id, guideDto, images);
     }
 
     @DeleteMapping("/{id}")
