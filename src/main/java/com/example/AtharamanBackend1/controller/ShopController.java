@@ -6,15 +6,25 @@ import com.example.AtharamanBackend1.dto.ShopDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/shops")
 public class ShopController {
     @Autowired
     private ShopService shopService;
 
-    @PostMapping
-    public ShopDto addShop(@RequestBody ShopDto shopDto) { return shopService.createShop(shopDto);}
+    @PostMapping(consumes = "multipart/form-data")
+      public ShopDto addShop(
+            @RequestPart("shop") ShopDto shopDto,
+            @RequestPart("images") MultipartFile[] images) throws IOException {
+            return shopService.createShop(shopDto,images);
+    }
+
 
     @GetMapping
     public List<ShopDto> getAllShops(){ return shopService.getAllShops();}
@@ -22,9 +32,12 @@ public class ShopController {
     @GetMapping("/{id}")
     public ShopDto getShop(@PathVariable Long id){ return shopService.getShopById(id);}
 
-    @PutMapping("/{id}")
-    public ShopDto updateShop(@RequestBody ShopDto shopDto, @PathVariable Long id){
-        return shopService.updateShopById(id, shopDto);
+    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
+    public ShopDto updateShop(
+            @PathVariable Long id,
+            @RequestPart("shop") ShopDto shopDto,
+            @RequestPart("images") MultipartFile[] images) throws IOException {
+        return shopService.updateShopById(id, shopDto, images);
     }
 
     @DeleteMapping("/{id}")
