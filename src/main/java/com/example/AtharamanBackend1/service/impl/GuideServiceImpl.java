@@ -3,6 +3,7 @@ package com.example.AtharamanBackend1.service.impl;
 import com.example.AtharamanBackend1.dto.GuideDto;
 import com.example.AtharamanBackend1.entity.Guide;
 import com.example.AtharamanBackend1.entity.User;
+import com.example.AtharamanBackend1.entity.Vehicle;
 import com.example.AtharamanBackend1.repository.GuideRepository;
 import com.example.AtharamanBackend1.repository.UserRepository;
 import com.example.AtharamanBackend1.service.GuideService;
@@ -78,7 +79,7 @@ public class GuideServiceImpl implements GuideService {
     }
 
     @Override
-    public GuideDto updateGuideById(Long id,GuideDto guideDto) {
+    public GuideDto updateGuideById(Long id,GuideDto guideDto, MultipartFile[] images) throws IOException {
         Guide guide = guideRepository.findById(id)
                 .orElseThrow(()-> new RuntimeException("Guide Not Found"));
         guide.setGuideName(guideDto.getGuideName());
@@ -88,8 +89,24 @@ public class GuideServiceImpl implements GuideService {
         guide.setLanguages(guideDto.getLanguages());
         guide.setDescription(guideDto.getDescription());
 
-        guideRepository.save(guide);
-        return convertToDto(guide);
+        List<String> imagePaths = new ArrayList<>();
+        if (images != null && images.length > 0) {
+            String uploadDir = "uploads/guide-packages/";
+            Files.createDirectories(Paths.get(uploadDir));
+
+            for (MultipartFile file : images) {
+                String filename = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+                Path path = Paths.get(uploadDir + filename);
+                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                imagePaths.add("/" + uploadDir + filename);
+            }
+
+            guide.setImagePaths(imagePaths);
+        }
+
+        Guide updated = guideRepository.save(guide);
+        guideDto.setId(updated.getId());
+        return guideDto;
     }
 
     @Override
