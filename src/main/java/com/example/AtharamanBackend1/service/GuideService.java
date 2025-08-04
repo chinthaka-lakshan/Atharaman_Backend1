@@ -11,7 +11,7 @@ public interface GuideService {
     GuideDto createGuide(GuideDto guideDto, MultipartFile[] images)throws IOException;
     List<GuideDto> getAllGuides();
     GuideDto getGuideById(Long id);
-    GuideDto updateGuideById(Long id, GuideDto guideDto, MultipartFile[] images)throws IOException;
+    GuideDto updateGuideById(Long id, GuideDto guideDto,MultipartFile[] images)throws IOException;
     void deleteGuideById(Long id);
     void submitGuideRequest(GuideRequestDto dto);
     void approveGuideRequest(Long requestId);
