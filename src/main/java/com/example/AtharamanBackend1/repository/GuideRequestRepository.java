@@ -1,0 +1,12 @@
+package com.example.AtharamanBackend1.repository;
+
+import com.example.AtharamanBackend1.entity.GuideRequest;
+import com.example.AtharamanBackend1.entity.RequestStatus;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+
+
+public interface GuideRequestRepository extends JpaRepository<GuideRequest, Long> {
+
+    List<GuideRequest> findByStatus(RequestStatus status);
+}
