@@ -31,6 +31,10 @@ public class Hotel {
     @Column (name = "locations")
     private List<String> locations;
 
+    @Column (name = "image")
+    @ElementCollection
+    private List<String> imagePaths;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "hotelOwner_id",referencedColumnName = "id")
     private HotelOwner hotelOwner;
