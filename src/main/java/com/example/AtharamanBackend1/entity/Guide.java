@@ -38,9 +38,6 @@ public class Guide {
     @ElementCollection
     private List<String> imagePaths;
 
-    @Column(name = "locations")
-    private List<String> locations;
-
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
