@@ -1,84 +1,106 @@
-package com.example.AtharamanBackend1.config;
-
-
-import com.example.AtharamanBackend1.filter.JwtAuthenticationFilter;
-import com.example.AtharamanBackend1.service.UserDetailsServiceImp;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-@Configuration
-@EnableWebSecurity
-public class SecurityConfig {
-
-    private final UserDetailsServiceImp userDetailsServiceImp;
-
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
-    private final CustomLogoutHandler logoutHandler;
-
-    public SecurityConfig(UserDetailsServiceImp userDetailsServiceImp,
-                          JwtAuthenticationFilter jwtAuthenticationFilter,
-                          CustomLogoutHandler logoutHandler) {
-        this.userDetailsServiceImp = userDetailsServiceImp;
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        this.logoutHandler = logoutHandler;
-    }
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(
-                        req->req.requestMatchers("/login/**","/api/register/**","/api/guides/**","/api/vehicleOwners/**","/api/hotelOwners/**", "/api/hotels/**", "/refresh_token/**")
-                                .permitAll()
-                                .requestMatchers("/admin_only/**").hasAuthority("ADMIN")
-                                .requestMatchers("/guide_only/**").hasAuthority("GUIDE")
-                                .requestMatchers("/hoelowner/**").hasAuthority("HOTELOWNER")
-                                .requestMatchers("/vehicleowner/**").hasAuthority("VEHICLEOWNER")
-                                .requestMatchers("/so/**").hasAuthority("SHOPOWNER")
-                                .anyRequest()
-                                .authenticated()
-                ).userDetailsService(userDetailsServiceImp)
-                .sessionManagement(session->session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(
-                        e->e.accessDeniedHandler(
-                                        (request, response, accessDeniedException)->response.setStatus(403)
-                                )
-                                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-                .logout(l->l
-                        .logoutUrl("/logout")
-                        .addLogoutHandler(logoutHandler)
-                        .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()
-                        ))
-                .build();
-
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
-    }
-
-
-}
+//package com.example.AtharamanBackend1.config;
+//
+//
+//import com.example.AtharamanBackend1.filter.JwtAuthenticationFilter;
+//import com.example.AtharamanBackend1.service.UserDetailsServiceImp;
+//import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Configuration;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.security.authentication.AuthenticationManager;
+//import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+//import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+//import org.springframework.security.config.http.SessionCreationPolicy;
+//import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.web.SecurityFilterChain;
+//import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+//import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+//import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+//import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+//
+//@Configuration
+//@EnableWebSecurity
+//public class SecurityConfig implements WebMvcConfigurer {
+//
+//    private final UserDetailsServiceImp userDetailsServiceImp;
+//
+//    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+//
+//    private final CustomLogoutHandler logoutHandler;
+//
+//    public SecurityConfig(UserDetailsServiceImp userDetailsServiceImp,
+//                          JwtAuthenticationFilter jwtAuthenticationFilter,
+//                          CustomLogoutHandler logoutHandler) {
+//        this.userDetailsServiceImp = userDetailsServiceImp;
+//        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+//        this.logoutHandler = logoutHandler;
+//    }
+//
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//
+//        return http
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests(
+//                        req->req.requestMatchers("/login/**",
+//                                        "/api/register/**",
+//                                        "/api/guides/**",
+//                                        "/api/vehicleOwners/**",
+//                                        "/api/hotelOwners/**",
+//                                        "/api/hotels/**",
+//                                        "/uploads/guide-packages/**",
+//                                        "/uploads/**",
+//                                        "/refresh_token/**")
+//                                .permitAll()
+//                                .requestMatchers("/admin_only/**").hasAuthority("ADMIN")
+//                                .requestMatchers("/guide_only/**").hasAuthority("GUIDE")
+//                                .requestMatchers("/hoelowner/**").hasAuthority("HOTELOWNER")
+//                                .requestMatchers("/vehicleowner/**").hasAuthority("VEHICLEOWNER")
+//                                .requestMatchers("/so/**").hasAuthority("SHOPOWNER")
+//                                .anyRequest()
+//                                .authenticated()
+//                ).userDetailsService(userDetailsServiceImp)
+//                .sessionManagement(session->session
+//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+//                .exceptionHandling(
+//                        e->e.accessDeniedHandler(
+//                                        (request, response, accessDeniedException)->response.setStatus(403)
+//                                )
+//                                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+//                .logout(l->l
+//                        .logoutUrl("/logout")
+//                        .addLogoutHandler(logoutHandler)
+//                        .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()
+//                        ))
+//                .build();
+//
+//    }
+//
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
+//
+//    @Bean
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+//        return configuration.getAuthenticationManager();
+//    }
+//
+//
+//
+//
+//    // Enable serving files from uploads/ folder
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry
+//                .addResourceHandler("/uploads/**","/uploads/guide-packages/**")
+//                .addResourceLocations("file:uploads/","file:uploads/location/")
+//                .setCachePeriod(3600);
+//    }
+//
+//
+//}
