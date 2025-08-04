@@ -19,6 +19,7 @@ public interface GuideService {
     void submitGuideRequest(GuideRequestDto dto);
     void approveGuideRequest(Long requestId);
     List<GuideRequestDto> getPendingGuideRequests();
+    List<GuideDto> getGuidesBylocations(List<String> locations);
 
 
 

@@ -1,5 +1,6 @@
 package com.example.AtharamanBackend1.controller;
 
+import com.example.AtharamanBackend1.dto.HotelDto;
 import com.example.AtharamanBackend1.dto.ShopOwnerDto;
 import com.example.AtharamanBackend1.service.ShopService;
 import com.example.AtharamanBackend1.dto.ShopDto;
@@ -25,6 +26,11 @@ public class ShopController {
     @PutMapping("/{id}")
     public ShopDto updateShop(@RequestBody ShopDto shopDto, @PathVariable Long id){
         return shopService.updateShopById(id, shopDto);
+    }
+
+    @PostMapping("/filter")
+    public List<ShopDto> getHotelByLocation(@RequestBody ShopDto shopDto){
+        return shopService.geyShopsByLocation(shopDto.getLocations());
     }
 
     @DeleteMapping("/{id}")

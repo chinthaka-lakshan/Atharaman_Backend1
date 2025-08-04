@@ -74,6 +74,18 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
+    public List<ShopDto> geyShopsByLocation(List<String> locations){
+        List<Shop> allShips = shopRepository.findAll();
+        return allShips.stream()
+                .filter(hotel -> hotel.getLocations() != null &&
+                        hotel.getLocations().stream().anyMatch(loc ->
+                                locations.stream().anyMatch(input ->
+                                        loc.toLowerCase().contains(input.toLowerCase()))))
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void deleteShopById(Long id) {
         Shop shop = shopRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Shop Not Found"));

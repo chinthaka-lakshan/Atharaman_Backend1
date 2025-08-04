@@ -9,5 +9,6 @@ public interface ShopService {
     List<ShopDto> getAllShops();
     ShopDto getShopById(Long id);
     ShopDto updateShopById(Long id, ShopDto shopDto);
+    List<ShopDto> geyShopsByLocation(List<String> locations);
     void deleteShopById(Long id);
 }
