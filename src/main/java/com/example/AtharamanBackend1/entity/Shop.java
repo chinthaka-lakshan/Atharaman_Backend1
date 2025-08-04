@@ -24,6 +24,10 @@ public class Shop {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "image")
+    @ElementCollection
+    private List<String> imagePaths;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shopOwner_id", referencedColumnName = "id")
     private ShopOwner shopOwner;

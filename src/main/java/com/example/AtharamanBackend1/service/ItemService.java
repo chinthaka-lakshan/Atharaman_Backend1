@@ -10,7 +10,7 @@ public interface ItemService {
     ItemDto createItem(ItemDto itemDto,MultipartFile[] images) throws IOException;
     List<ItemDto> getAllItems();
     ItemDto getItemById(Long id);
-    ItemDto updateItemById(Long id, ItemDto itemDto);
+    ItemDto updateItemById(Long id, ItemDto itemDto,MultipartFile[] images) throws IOException;
     void deleteItemById(Long id);
 
 }

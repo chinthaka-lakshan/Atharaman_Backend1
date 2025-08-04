@@ -10,8 +10,16 @@ import com.example.AtharamanBackend1.repository.UserRepository;
 import com.example.AtharamanBackend1.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +35,7 @@ public class ShopServiceImpl implements ShopService {
     private ShopOwnerRepository shopOwnerRepository;
 
     @Override
-    public ShopDto createShop(ShopDto shopDto) {
+    public ShopDto createShop(ShopDto shopDto, MultipartFile[] images)throws IOException {
         Shop shop = new Shop();
         shop.setShopName(shopDto.getShopName());
         shop.setLocations(shopDto.getLocations());
@@ -40,6 +48,20 @@ public class ShopServiceImpl implements ShopService {
         ShopOwner shopOwner = shopOwnerRepository.findById(shopDto.getShopOwner_id())
                 .orElseThrow(()->new RuntimeException("Shop Owner Not Found"));
         shop.setShopOwner(shopOwner);
+
+        List<String> imagePaths = new ArrayList<>();
+        if (images != null && images.length > 0) {
+            String uploadDir = "uploads/shop-packages/";
+            Files.createDirectories(Paths.get(uploadDir));
+
+            for (MultipartFile file : images) {
+                String filename = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+                Path path = Paths.get(uploadDir + filename);
+                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                imagePaths.add("/" + uploadDir + filename);
+            }
+        }
+        shop.setImagePaths(imagePaths);
 
 
         Shop savedShop = shopRepository.save(shop);
@@ -62,15 +84,32 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public ShopDto updateShopById(Long id, ShopDto shopDto) {
+    public ShopDto updateShopById(Long id, ShopDto shopDto, MultipartFile[] images) throws IOException {
         Shop shop = shopRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Shop Not Found"));
         shop.setShopName(shopDto.getShopName());
         shop.setLocations(shopDto.getLocations());
         shop.setDescription(shopDto.getDescription());
 
-        shopRepository.save(shop);
-        return convertToDto(shop);
+        List<String> imagePaths = new ArrayList<>();
+        if (images != null && images.length > 0) {
+            String uploadDir = "uploads/shop-packages/";
+            Files.createDirectories(Paths.get(uploadDir));
+
+            for (MultipartFile file : images) {
+                String filename = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+                Path path = Paths.get(uploadDir + filename);
+                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                imagePaths.add("/" + uploadDir + filename);
+            }
+        }
+        shop.setImagePaths(imagePaths);
+
+
+        Shop updated = shopRepository.save(shop);
+        shopDto.setId(updated.getId());
+        return shopDto;
+
     }
 
     @Override
