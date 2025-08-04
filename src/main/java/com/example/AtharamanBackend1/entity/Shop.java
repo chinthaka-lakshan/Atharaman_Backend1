@@ -32,5 +32,8 @@ public class Shop {
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private User user;
 
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
+    private List<Item> item;
+
 
 }
