@@ -8,8 +8,16 @@ import com.example.AtharamanBackend1.repository.UserRepository;
 import com.example.AtharamanBackend1.service.GuideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,7 +30,7 @@ public class GuideServiceImpl implements GuideService {
     private UserRepository userRepository;
 
     @Override
-    public GuideDto createGuide(GuideDto guideDto) {
+    public GuideDto createGuide(GuideDto guideDto, MultipartFile[] images) throws IOException {
         Guide guide = new Guide();
         guide.setGuideName(guideDto.getGuideName());
         guide.setBusinessMail(guideDto.getBusinessMail());
@@ -34,6 +42,22 @@ public class GuideServiceImpl implements GuideService {
         User user = userRepository.findById(guideDto.getUser_id())
                 .orElseThrow(() ->new RuntimeException("User not found"));
         guide.setUser(user);
+
+        List<String> imagePaths = new ArrayList<>();
+        if (images != null && images.length > 0) {
+            String uploadDir = "uploads/guide-packages/";
+            Files.createDirectories(Paths.get(uploadDir));
+
+            for (MultipartFile file : images) {
+                String filename = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+                Path path = Paths.get(uploadDir + filename);
+                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                imagePaths.add("/" + uploadDir + filename);
+            }
+        }
+        guide.setImagePaths(imagePaths);
+
+
 
         Guide savedGuide = guideRepository.save(guide);
         guideDto.setId(savedGuide.getId());

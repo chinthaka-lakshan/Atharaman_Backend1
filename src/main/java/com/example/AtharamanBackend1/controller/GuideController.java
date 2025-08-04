@@ -3,9 +3,12 @@ package com.example.AtharamanBackend1.controller;
 import com.example.AtharamanBackend1.dto.GuideDto;
 import com.example.AtharamanBackend1.service.GuideService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -14,10 +17,13 @@ public class GuideController {
     @Autowired
     private GuideService guideService;
 
-    @PostMapping
-    public GuideDto addGuide(@RequestBody GuideDto guideDto) {
-        return guideService.createGuide(guideDto);
+    @PostMapping(consumes = "multipart/form-data")
+    public GuideDto createGuide(
+            @RequestPart("guide") GuideDto guideDto,
+            @RequestPart("images") MultipartFile[] images) throws IOException {
+        return guideService.createGuide(guideDto, images);
     }
+
     @GetMapping
     public List<GuideDto> getAllGuides() {
         return guideService.getAllGuides();

@@ -31,6 +31,10 @@ public class Guide {
     @Column (name = "description")
     private String description;
 
+    @Column (name = "image")
+    @ElementCollection
+    private List<String> imagePaths;
+
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;

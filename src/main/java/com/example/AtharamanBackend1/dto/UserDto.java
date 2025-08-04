@@ -1,8 +1,6 @@
 package com.example.AtharamanBackend1.dto;
 
 
-import com.example.AtharamanBackend1.entity.Role;
-import com.example.AtharamanBackend1.entity.Token;
 import lombok.Data;
 
 import java.util.List;
@@ -14,7 +12,7 @@ public class UserDto {
     private String lastName;
     private String username;
     private String password;
-    private Role role;
-    private List<Token> tokens;
+//    private Role role;
+//    private List<Token> tokens;
 
 }
