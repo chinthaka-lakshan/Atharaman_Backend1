@@ -25,6 +25,9 @@ public class Vehicle {
     @Column(name = "description")
     private String description;
 
+    @Column (name = "locations")
+    private List<String> locations;
+
     @Column(name = "with_driver")
     private String withDriver;
 

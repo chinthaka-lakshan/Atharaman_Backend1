@@ -42,6 +42,7 @@ public class VehicleServiceImpl implements VehicleService {
         vehicle.setMileagePerDay(vehicleDto.getMileagePerDay());
         vehicle.setWithDriver(vehicleDto.getWithDriver());
         vehicle.setDescription(vehicleDto.getDescription());
+        vehicle.setLocations(vehicleDto.getLocations());
 
         User user =userRepository.findById(vehicleDto.getUser_id())
                 .orElseThrow(()-> new RuntimeException("User Not Found"));
@@ -94,6 +95,7 @@ public class VehicleServiceImpl implements VehicleService {
         vehicle.setMileagePerDay(vehicleDto.getMileagePerDay());
         vehicle.setWithDriver(vehicleDto.getWithDriver());
         vehicle.setDescription(vehicleDto.getDescription());
+        vehicle.setLocations(vehicleDto.getLocations());
 
         List<String> imagePaths = new ArrayList<>();
         if (images != null && images.length > 0) {
@@ -140,6 +142,7 @@ public class VehicleServiceImpl implements VehicleService {
         dto.setMileagePerDay(vehicle.getMileagePerDay());
         dto.setWithDriver(vehicle.getWithDriver());
         dto.setDescription(vehicle.getDescription());
+        dto.setLocations(vehicle.getLocations());
         dto.setImagePaths(vehicle.getImagePaths());
 
         if (vehicle.getUser() != null) {

@@ -36,6 +36,7 @@ public class ItemServiceImpl implements ItemService {
         item.setItemName(itemDto.getItemName());
         item.setDiscription(itemDto.getDescription());
         item.setPrice(itemDto.getPrice());
+        item.setLocations(itemDto.getLocations());
 
         Shop shop = shopRepository.findById(itemDto.getShop_id()).orElseThrow(() -> new RuntimeException("Shop not found"));
         item.setShop(shop);
@@ -80,6 +81,7 @@ public class ItemServiceImpl implements ItemService {
         item.setItemName(itemDto.getItemName());
         item.setDiscription(itemDto.getDescription());
         item.setPrice(itemDto.getPrice());
+        item.setLocations(itemDto.getLocations());
 
         itemRepository.save(item);
         return convertToDto(item);
@@ -104,6 +106,7 @@ public class ItemServiceImpl implements ItemService {
         dto.setItemName(item.getItemName());
         dto.setDescription(item.getDiscription());
         dto.setPrice(item.getPrice());
+        dto.setLocations(item.getLocations());
         if (item.getShop() != null) {
             dto.setShop_id(item.getShop().getId());
         } else {

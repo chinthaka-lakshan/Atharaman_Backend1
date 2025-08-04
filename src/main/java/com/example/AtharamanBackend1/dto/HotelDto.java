@@ -13,6 +13,7 @@ public class HotelDto {
     private String whatsappNumber;
     private String nicNumber;
     private List<String> locations;
+    private List<String> imagePaths;
     private Long hotelOwner_id;
     private Long user_id;
 

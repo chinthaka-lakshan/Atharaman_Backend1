@@ -31,6 +31,9 @@ public class Guide {
     @Column (name = "description")
     private String description;
 
+    @Column (name = "locations")
+    private List<String> locations;
+
     @Column (name = "image")
     @ElementCollection
     private List<String> imagePaths;

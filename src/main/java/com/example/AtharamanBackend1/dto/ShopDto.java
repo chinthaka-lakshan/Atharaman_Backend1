@@ -12,7 +12,7 @@ import java.util.List;
 public class ShopDto {
     private Long id;
     private String shopName;
-    private List<String> location;
+    private List<String> locations;
     private String description;
     private Long user_id;
     private Long shopOwner_id;
