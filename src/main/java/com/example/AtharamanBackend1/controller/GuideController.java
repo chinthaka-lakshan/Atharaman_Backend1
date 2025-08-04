@@ -43,6 +43,11 @@ public class GuideController {
         return guideService.updateGuideById(id, guideDto, images);
     }
 
+    @PostMapping("/filter")
+    public List<GuideDto> getGuidesBylocations(@RequestBody GuideDto guideDto){
+        return guideService.getGuidesBylocations(guideDto.getLocations());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteGuide(@PathVariable Long id){
         guideService.deleteGuideById(id);

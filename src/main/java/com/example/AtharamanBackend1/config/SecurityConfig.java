@@ -48,6 +48,7 @@ public class SecurityConfig {
                                         "/refresh_token/**",
                                         "api/guide-request",
                                         "/api/admin/guides/**",
+                                        "/api/vehicles/**",
                                         "/admin/guides/approve/**")
                                 .permitAll()
                                 .requestMatchers("/admin_only/**").hasAuthority("ADMIN")

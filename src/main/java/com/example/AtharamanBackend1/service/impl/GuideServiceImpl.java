@@ -130,6 +130,18 @@ public class GuideServiceImpl implements GuideService {
         guideRepository.delete(guide);
     }
 
+    @Override
+    public List<GuideDto> getGuidesBylocations(List<String> locations){
+        List<Guide> allGuides = guideRepository.findAll();
+        return allGuides.stream()
+                .filter(hotel -> hotel.getLocations() != null &&
+                        hotel.getLocations().stream().anyMatch(loc ->
+                                locations.stream().anyMatch(input ->
+                                        loc.toLowerCase().contains(input.toLowerCase()))))
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
     private GuideDto convertToDto(Guide guide) {
         GuideDto dto = new GuideDto();
         dto.setId(guide.getId());

@@ -10,6 +10,7 @@ public interface ShopService {
     ShopDto createShop(ShopDto shopDto,MultipartFile[] images) throws IOException;
     List<ShopDto> getAllShops();
     ShopDto getShopById(Long id);
+    List<ShopDto> geyShopsByLocation(List<String> locations);
     ShopDto updateShopById(Long id, ShopDto shopDto,MultipartFile[] images) throws IOException;
     void deleteShopById(Long id);
 }

@@ -11,5 +11,6 @@ public interface VehicleService {
     VehicleDto updateVehicle(Long id, VehicleDto vehicleDto,MultipartFile[] images) throws IOException;
     VehicleDto vehicleGetById(Long id);
     List<VehicleDto> getAllVehicles();
+    List<VehicleDto> getVehiclesByLocation(List<String> locations);
     void deleteVehicleById(Long id);
 }

@@ -1,5 +1,6 @@
 package com.example.AtharamanBackend1.controller;
 
+import com.example.AtharamanBackend1.dto.HotelDto;
 import com.example.AtharamanBackend1.dto.VehicleDto;
 import com.example.AtharamanBackend1.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,11 @@ public class VehicleController {
     @GetMapping("/{id}")
     public VehicleDto vehicleGetById(@PathVariable Long id){
         return vehicleService.vehicleGetById(id);
+    }
+
+    @PostMapping("/filter")
+    public List<VehicleDto> getVehiclesByLocation(@RequestBody VehicleDto vehicleDto) {
+        return vehicleService.getVehiclesByLocation(vehicleDto.getLocations());
     }
 
     @DeleteMapping("/{id}")
