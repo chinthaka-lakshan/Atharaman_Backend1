@@ -148,6 +148,12 @@ public class ShopServiceImpl implements ShopService {
         } else {
             dto.setUser_id(null);
         }
+
+        if (shop.getShopOwner() != null) {
+            dto.setShopOwner_id(shop.getShopOwner().getId());
+        } else {
+            dto.setShopOwner_id(null);
+        }
         return dto;
     }
 }
