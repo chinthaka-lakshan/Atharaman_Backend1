@@ -33,6 +33,9 @@ public class VehicleOwner {
     @Column (name = "description")
     private String description;
 
+    @OneToMany(mappedBy = "vehicleOwner")
+    private List<Vehicle> vehicles;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
