@@ -7,13 +7,12 @@ import lombok.ToString;
 import java.util.List;
 
 @Data
-@ToString
-@NoArgsConstructor
 public class ShopDto {
     private Long id;
     private String shopName;
     private List<String> location;
     private String description;
+    private List<String> imagePaths;
     private Long user_id;
     private Long shopOwner_id;
 

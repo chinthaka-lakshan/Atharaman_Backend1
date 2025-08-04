@@ -14,6 +14,7 @@ public class GuideDto {
     private List<String> languages;
     private String description;
     private List<String> imagePaths;
+    private List<String> locations;
     private Long user_id;
 
 }

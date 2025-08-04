@@ -1,10 +1,12 @@
 package com.example.AtharamanBackend1.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class VehicleDto {
     private Long id;
     private String vehicleName;

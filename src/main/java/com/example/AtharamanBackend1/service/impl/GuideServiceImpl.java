@@ -38,6 +38,7 @@ public class GuideServiceImpl implements GuideService {
         guide.setWhatsappNumber(guideDto.getWhatsappNumber());
         guide.setLanguages(guideDto.getLanguages());
         guide.setDescription(guideDto.getDescription());
+        guide.setLocations(guideDto.getLocations());
 
         User user = userRepository.findById(guideDto.getUser_id())
                 .orElseThrow(() ->new RuntimeException("User not found"));
@@ -87,6 +88,7 @@ public class GuideServiceImpl implements GuideService {
         guide.setWhatsappNumber(guideDto.getWhatsappNumber());
         guide.setLanguages(guideDto.getLanguages());
         guide.setDescription(guideDto.getDescription());
+        guide.setLocations(guideDto.getLocations());
 
         guideRepository.save(guide);
         return convertToDto(guide);
@@ -113,6 +115,7 @@ public class GuideServiceImpl implements GuideService {
         dto.setWhatsappNumber(guide.getWhatsappNumber());
         dto.setLanguages(guide.getLanguages());
         dto.setDescription(guide.getDescription());
+        dto.setLocations(guide.getLocations());
         if (guide.getUser() != null) {
             dto.setUser_id(guide.getUser().getId());
         } else {

@@ -74,15 +74,32 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDto updateItemById(Long id, ItemDto itemDto) {
+    public ItemDto updateItemById(Long id, ItemDto itemDto,MultipartFile[] images) throws IOException {
         Item item = itemRepository.findById(id)
                 .orElseThrow(()-> new RuntimeException("Item Not Found"));
         item.setItemName(itemDto.getItemName());
         item.setDiscription(itemDto.getDescription());
         item.setPrice(itemDto.getPrice());
 
-        itemRepository.save(item);
-        return convertToDto(item);
+        List<String> imagePaths = new ArrayList<>();
+        if (images != null && images.length > 0) {
+            String uploadDir = "uploads/item-packages/";
+            Files.createDirectories(Paths.get(uploadDir));
+
+            for (MultipartFile file : images) {
+                String filename = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+                Path path = Paths.get(uploadDir + filename);
+                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                imagePaths.add("/" + uploadDir + filename);
+            }
+
+            item.setImagePaths(imagePaths);
+        }
+
+        Item updated = itemRepository.save(item);
+        itemDto.setId(updated.getId());
+        return itemDto;
+
     }
 
     @Override
@@ -103,6 +120,7 @@ public class ItemServiceImpl implements ItemService {
         dto.setId(item.getId());
         dto.setItemName(item.getItemName());
         dto.setDescription(item.getDiscription());
+        dto.setImagePaths(item.getImagePaths());
         dto.setPrice(item.getPrice());
         if (item.getShop() != null) {
             dto.setShop_id(item.getShop().getId());

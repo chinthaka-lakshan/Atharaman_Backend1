@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/items")
 public class ItemController {
@@ -18,7 +19,6 @@ public class ItemController {
     private ItemService itemService;
 
     @PostMapping(consumes = "multipart/form-data")
-//    public ItemDto addItem(@RequestBody ItemDto itemDto) {return itemService.createItem(itemDto);}
       public ItemDto createItem(
               @RequestPart("item")  ItemDto itemDto,
               @RequestPart("images") MultipartFile[] images) throws IOException {
@@ -36,9 +36,12 @@ public class ItemController {
         return itemService.getItemById(id);
     }
 
-    @PutMapping("/{id}")
-    public ItemDto updateItem(@RequestBody ItemDto itemDto, @PathVariable Long id){
-        return itemService.updateItemById(id, itemDto);
+    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
+    public ItemDto updateItem(
+            @PathVariable Long id,
+            @RequestPart("item")  ItemDto itemDto,
+            @RequestPart(value = "images", required = false) MultipartFile[] images) throws IOException {
+        return itemService.updateItemById(id, itemDto, images);
     }
 
     @DeleteMapping("/{id}")
