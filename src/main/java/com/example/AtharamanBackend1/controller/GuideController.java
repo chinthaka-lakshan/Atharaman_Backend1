@@ -42,6 +42,6 @@ public class GuideController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteGuide(@PathVariable Long id){
         guideService.deleteGuideById(id);
-        return ResponseEntity.ok("Success");
+        return ResponseEntity.ok("Guide Deleted Success");
     }
 }

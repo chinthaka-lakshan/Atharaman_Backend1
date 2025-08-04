@@ -3,10 +3,12 @@ package com.example.AtharamanBackend1.controller;
 import com.example.AtharamanBackend1.dto.VehicleDto;
 import com.example.AtharamanBackend1.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -22,6 +24,11 @@ public class VehicleController {
         return vehicleService.addVehicle(vehicleDto, images);
     }
 
+    @GetMapping
+    public List<VehicleDto> getAllVehicles(){
+        return vehicleService.getAllVehicles();
+    }
+
     @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public VehicleDto updateVehicle(
             @PathVariable Long id,
@@ -32,6 +39,13 @@ public class VehicleController {
     @GetMapping("/{id}")
     public VehicleDto vehicleGetById(@PathVariable Long id){
         return vehicleService.vehicleGetById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteVehicleById(@PathVariable Long id){
+        vehicleService.deleteVehicleById(id);
+        return ResponseEntity.ok("Vehicle Delete Success");
+
     }
 
 
