@@ -4,6 +4,7 @@ import com.example.AtharamanBackend1.dto.GuideDto;
 import com.example.AtharamanBackend1.dto.ReviewLocationHotelDto;
 import com.example.AtharamanBackend1.service.ReviewLocationHotelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,5 +41,11 @@ public class ReviewLocationHotelController {
             @RequestPart ("reviewLocationHotel") ReviewLocationHotelDto reviewLocationHotelDto,
             @RequestPart(value = "images", required = false) MultipartFile[] images) throws IOException{
         return reviewLocationHotelService.updateReview(id,reviewLocationHotelDto, images);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteReview(@PathVariable Long id){
+        reviewLocationHotelService.deleteReview(id);
+        return ResponseEntity.ok("Guide Deleted Success");
     }
 }

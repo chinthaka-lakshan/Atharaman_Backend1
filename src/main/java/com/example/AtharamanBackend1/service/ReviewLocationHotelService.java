@@ -11,4 +11,5 @@ public interface ReviewLocationHotelService {
     List<ReviewLocationHotelDto> getAllReview();
     ReviewLocationHotelDto getById(Long id);
     ReviewLocationHotelDto updateReview(Long id,ReviewLocationHotelDto reviewLocationHotelDto,MultipartFile[] images)throws IOException;
+    void deleteReview(Long id);
 }
