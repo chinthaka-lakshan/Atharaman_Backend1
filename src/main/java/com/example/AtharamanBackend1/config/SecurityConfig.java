@@ -46,8 +46,11 @@ public class SecurityConfig {
                         req->req.requestMatchers("/login/**",
                                         "/register/**",
                                         "/refresh_token/**",
-                                        "api/guide-request",
-                                        "/api/admin/guides/**",
+                                        "/api/guides/**",
+                                        "/api/hotelOwners/**",
+                                        "/api/admin/requests/**",
+                                        "/api/admin/requests/guide approve/**",
+                                        "/api/admin/requests/shopowner approve/**",
                                         "/admin/guides/approve/**")
                                 .permitAll()
                                 .requestMatchers("/admin_only/**").hasAuthority("ADMIN")
