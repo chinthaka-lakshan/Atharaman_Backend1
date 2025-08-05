@@ -1,9 +1,11 @@
 package com.example.AtharamanBackend1.service.impl;
 
+import com.example.AtharamanBackend1.dto.GuideRequestDto;
 import com.example.AtharamanBackend1.dto.HotelOwnerDto;
-import com.example.AtharamanBackend1.entity.HotelOwner;
-import com.example.AtharamanBackend1.entity.User;
+import com.example.AtharamanBackend1.dto.HotelOwnerRequestDto;
+import com.example.AtharamanBackend1.entity.*;
 import com.example.AtharamanBackend1.repository.HotelOwnerRepository;
+import com.example.AtharamanBackend1.repository.HotelOwnerRequestRepository;
 import com.example.AtharamanBackend1.repository.UserRepository;
 import com.example.AtharamanBackend1.service.HotelOwnerService;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,6 +21,8 @@ public class HotelOwnerServiceImpl implements HotelOwnerService {
     private HotelOwnerRepository hotelOwnerRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private HotelOwnerRequestRepository hotelOwnerRequestRepository;
 
     @Override
     public HotelOwnerDto createHotelOwner(HotelOwnerDto hotelOwnerDto) {
@@ -93,4 +97,77 @@ public class HotelOwnerServiceImpl implements HotelOwnerService {
     }
 
 
+
+
+
+    @Override
+    public void submitHotelOwnerRequest(HotelOwnerRequestDto dto) {
+        User user = userRepository.findById(dto.getUser_id())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        HotelOwnerRequest request = new HotelOwnerRequest();
+        request.setId(dto.getId());
+        request.setOwnerName(dto.getOwnerName());
+        request.setHotelOwnerNic(dto.getHotelOwnerNic());
+        request.setBusinessMail(dto.getBusinessMail());
+        request.setContactNumber(dto.getContactNumber());
+        request.setDescription(dto.getDescription());
+        request.setUser(user);
+        request.setStatus(RequestStatus.PENDING);
+
+        hotelOwnerRequestRepository.save(request);
+    }
+
+
+
+
+
+    @Override
+    public void approveHotelOwnerRequest(Long requestId) {
+        HotelOwnerRequest request = hotelOwnerRequestRepository.findById(requestId)
+                .orElseThrow(() -> new RuntimeException("Hotel Owner request not found"));
+
+        if (request.getStatus() != RequestStatus.PENDING) {
+            throw new RuntimeException("Request is already processed");
+        }
+
+        HotelOwner hotelOwner = new HotelOwner();
+        hotelOwner.setOwnerName(request.getOwnerName());
+        hotelOwner.setUser(request.getUser());
+        hotelOwner.setHotelOwnerNic(request.getHotelOwnerNic());
+        hotelOwner.setBusinessMail(request.getBusinessMail());
+        hotelOwner.setContactNumber(request.getContactNumber());
+        hotelOwner.setDescription(request.getDescription());
+
+
+
+        hotelOwnerRepository.save(hotelOwner);
+
+        request.setStatus(RequestStatus.APPROVED);
+        hotelOwnerRequestRepository.save(request);
+
+
+    }
+
+    @Override
+    public List<HotelOwnerRequestDto> getPendingHotelOwnerRequests() {
+        List<HotelOwnerRequest> requests = hotelOwnerRequestRepository.findByStatus(RequestStatus.PENDING);
+
+        return requests.stream().map(req -> {
+            HotelOwnerRequestDto dto = new HotelOwnerRequestDto();
+            dto.setUser_id(req.getUser().getId());
+            dto.setId(req.getId());
+            dto.setOwnerName(req.getOwnerName());
+            dto.setHotelOwnerNic(req.getHotelOwnerNic());
+            dto.setBusinessMail(req.getBusinessMail());
+            dto.setHotelOwnerNic(req.getHotelOwnerNic());
+            dto.setContactNumber(req.getContactNumber());
+            dto.setDescription(req.getDescription());
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
 }
+
+
+

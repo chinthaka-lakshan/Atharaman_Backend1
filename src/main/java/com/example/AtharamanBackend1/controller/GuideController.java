@@ -1,6 +1,7 @@
 package com.example.AtharamanBackend1.controller;
 
 import com.example.AtharamanBackend1.dto.GuideDto;
+import com.example.AtharamanBackend1.dto.GuideRequestDto;
 import com.example.AtharamanBackend1.dto.VehicleDto;
 import com.example.AtharamanBackend1.service.GuideService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +53,11 @@ public class GuideController {
     public ResponseEntity<String> deleteGuide(@PathVariable Long id){
         guideService.deleteGuideById(id);
         return ResponseEntity.ok("Guide Deleted Success");
+    }
+
+    @PostMapping("/request")
+    public ResponseEntity<String> submitGuideRequest(@RequestBody GuideRequestDto dto) {
+        guideService.submitGuideRequest(dto);
+        return ResponseEntity.ok("Guide request submitted successfully.");
     }
 }
