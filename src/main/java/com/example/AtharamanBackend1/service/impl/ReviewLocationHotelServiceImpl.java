@@ -104,6 +104,18 @@ public class ReviewLocationHotelServiceImpl implements ReviewLocationHotelServic
         return reviewLocationHotelDto;
     }
 
+    @Override
+    public void deleteReview(Long id){
+        ReviewLocationHotel reviewLocationHotel = reviewLocationHotelRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Review Not Found"));
+        if (reviewLocationHotel.getUser() != null) {
+            User user = reviewLocationHotel.getUser();
+            user.setReviewLocationHotels(null);
+            reviewLocationHotel.setUser(null);
+        }
+        reviewLocationHotelRepository.delete(reviewLocationHotel);
+    }
+
     private ReviewLocationHotelDto convertToDto(ReviewLocationHotel reviewLocationHotel){
         ReviewLocationHotelDto dto = new ReviewLocationHotelDto();
         dto.setId(reviewLocationHotel.getId());
