@@ -29,7 +29,7 @@ public class VehicleController {
     public List<VehicleDto> getAllVehicles(){
         return vehicleService.getAllVehicles();
     }
-
+ 
     @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public VehicleDto updateVehicle(
             @PathVariable Long id,
