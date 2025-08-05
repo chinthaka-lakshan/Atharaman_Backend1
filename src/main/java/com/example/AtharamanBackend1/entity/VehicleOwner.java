@@ -18,6 +18,9 @@ public class VehicleOwner {
     @Column (name = "vehicle_owner_name")
     private String vehicleOwnerName;
 
+    @Column (name = "vehicle_owner_nic")
+    private String vehicleOwnerNic;
+
     @Column (name = "business_mail")
     private String businessMail;
 
