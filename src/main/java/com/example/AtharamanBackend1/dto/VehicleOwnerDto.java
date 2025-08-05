@@ -8,6 +8,7 @@ import java.util.List;
 public class VehicleOwnerDto {
     private Long id;
     private String vehicleOwnerName;
+    private String VehicleOwnerNic;
     private String businessMail;
     private String personalNumber;
     private String whatsappNumber;

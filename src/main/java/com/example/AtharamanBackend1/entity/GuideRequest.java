@@ -22,6 +22,9 @@ public class GuideRequest {
     @Column (name = "guide_name")
     private String guideName;
 
+    @Column(name = "guide_nic")
+    private String guideNic;
+
     @Column (name = "business_mail")
     private String businessMail;
 

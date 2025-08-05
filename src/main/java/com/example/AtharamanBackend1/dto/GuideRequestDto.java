@@ -8,6 +8,7 @@ import java.util.List;
 public class GuideRequestDto {
         private Long id;
         private String guideName;
+        private String guideNic;
         private String businessMail;
         private String personalNumber;
         private String whatsappNumber;

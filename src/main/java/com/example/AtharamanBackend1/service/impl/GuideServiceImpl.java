@@ -41,6 +41,7 @@ public class GuideServiceImpl implements GuideService {
     public GuideDto createGuide(GuideDto guideDto, MultipartFile[] images) throws IOException {
         Guide guide = new Guide();
         guide.setGuideName(guideDto.getGuideName());
+        guide.setGuideNic(guideDto.getGuideNic());
         guide.setBusinessMail(guideDto.getBusinessMail());
         guide.setPersonalNumber(guideDto.getPersonalNumber());
         guide.setWhatsappNumber(guideDto.getWhatsappNumber());
@@ -91,6 +92,7 @@ public class GuideServiceImpl implements GuideService {
         Guide guide = guideRepository.findById(id)
                 .orElseThrow(()-> new RuntimeException("Guide Not Found"));
         guide.setGuideName(guideDto.getGuideName());
+        guide.setGuideNic(guideDto.getGuideNic());
         guide.setBusinessMail(guideDto.getBusinessMail());
         guide.setPersonalNumber(guideDto.getPersonalNumber());
         guide.setWhatsappNumber(guideDto.getWhatsappNumber());
@@ -146,6 +148,7 @@ public class GuideServiceImpl implements GuideService {
         GuideDto dto = new GuideDto();
         dto.setId(guide.getId());
         dto.setGuideName(guide.getGuideName());
+        dto.setGuideNic(guide.getGuideNic());
         dto.setBusinessMail(guide.getBusinessMail());
         dto.setPersonalNumber(guide.getPersonalNumber());
         dto.setWhatsappNumber(guide.getWhatsappNumber());
@@ -169,6 +172,7 @@ public class GuideServiceImpl implements GuideService {
 
         GuideRequest request = new GuideRequest();
         request.setGuideName(dto.getGuideName());
+        request.setGuideNic(dto.getGuideNic());
         request.setBusinessMail(dto.getBusinessMail());
         request.setPersonalNumber(dto.getPersonalNumber());
         request.setWhatsappNumber(dto.getWhatsappNumber());
@@ -195,6 +199,7 @@ public class GuideServiceImpl implements GuideService {
 
         Guide guide = new Guide();
         guide.setGuideName(request.getGuideName());
+        guide.setGuideNic(request.getGuideNic());
         guide.setUser(request.getUser());
         guide.setGuideName(request.getGuideName());
         guide.setBusinessMail(request.getBusinessMail());
@@ -220,6 +225,7 @@ public class GuideServiceImpl implements GuideService {
             GuideRequestDto dto = new GuideRequestDto();
             dto.setUser_id(req.getUser().getId());
             dto.setGuideName(req.getGuideName());
+            dto.setGuideNic(req.getGuideNic());
             dto.setBusinessMail(req.getBusinessMail());
             dto.setPersonalNumber(req.getPersonalNumber());
             dto.setWhatsappNumber(req.getWhatsappNumber());
