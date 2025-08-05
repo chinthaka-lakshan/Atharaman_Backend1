@@ -25,6 +25,7 @@ public class VehicleOwnerServiceImpl implements VehicleOwnerService {
     public VehicleOwnerDto createVehicleOwner(VehicleOwnerDto vehicleOwnerDto) {
         VehicleOwner vehicleOwner = new VehicleOwner();
         vehicleOwner.setVehicleOwnerName(vehicleOwnerDto.getVehicleOwnerName());
+        vehicleOwner.setVehicleOwnerNic(vehicleOwner.getVehicleOwnerNic());
         vehicleOwner.setBusinessMail(vehicleOwnerDto.getBusinessMail());
         vehicleOwner.setPersonalNumber(vehicleOwnerDto.getPersonalNumber());
         vehicleOwner.setWhatsappNumber(vehicleOwnerDto.getWhatsappNumber());
@@ -58,6 +59,7 @@ public class VehicleOwnerServiceImpl implements VehicleOwnerService {
     public VehicleOwnerDto updateVehicleOwner(VehicleOwnerDto vehicleOwnerDto) {
         VehicleOwner vehicleOwner = new VehicleOwner();
         vehicleOwner.setVehicleOwnerName(vehicleOwnerDto.getVehicleOwnerName());
+        vehicleOwner.setVehicleOwnerNic(vehicleOwner.getVehicleOwnerNic());
         vehicleOwner.setBusinessMail(vehicleOwnerDto.getBusinessMail());
         vehicleOwner.setPersonalNumber(vehicleOwnerDto.getPersonalNumber());
         vehicleOwner.setWhatsappNumber(vehicleOwnerDto.getWhatsappNumber());
@@ -84,6 +86,7 @@ public class VehicleOwnerServiceImpl implements VehicleOwnerService {
         VehicleOwnerDto vehicleOwnerDto = new VehicleOwnerDto();
         vehicleOwnerDto.setId(vehicleOwner.getId());
         vehicleOwnerDto.setVehicleOwnerName(vehicleOwner.getVehicleOwnerName());
+        vehicleOwnerDto.setVehicleOwnerNic(vehicleOwner.getVehicleOwnerNic());
         vehicleOwnerDto.setBusinessMail(vehicleOwner.getBusinessMail());
         vehicleOwnerDto.setPersonalNumber(vehicleOwner.getPersonalNumber());
         vehicleOwnerDto.setWhatsappNumber(vehicleOwner.getWhatsappNumber());
