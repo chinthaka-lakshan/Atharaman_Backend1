@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/review_L&H")
@@ -21,5 +22,23 @@ public class ReviewLocationHotelController {
             @RequestPart("reviewLocationHotel") ReviewLocationHotelDto reviewLocationHotelDto,
             @RequestPart("images") MultipartFile[] images) throws IOException {
         return reviewLocationHotelService.createReview(reviewLocationHotelDto, images);
+    }
+
+    @GetMapping
+    public List<ReviewLocationHotelDto> getAllReview(){
+        return reviewLocationHotelService.getAllReview();
+    }
+
+    @GetMapping("/{id}")
+    public ReviewLocationHotelDto getById(@PathVariable Long id){
+        return reviewLocationHotelService.getById(id);
+    }
+
+    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
+    public ReviewLocationHotelDto updateReview(
+            @PathVariable Long id,
+            @RequestPart ("reviewLocationHotel") ReviewLocationHotelDto reviewLocationHotelDto,
+            @RequestPart(value = "images", required = false) MultipartFile[] images) throws IOException{
+        return reviewLocationHotelService.updateReview(id,reviewLocationHotelDto, images);
     }
 }
