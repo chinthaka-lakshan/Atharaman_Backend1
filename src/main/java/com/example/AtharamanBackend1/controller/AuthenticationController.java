@@ -6,19 +6,19 @@ import com.example.AtharamanBackend1.dto.UserDto;
 import com.example.AtharamanBackend1.entity.AuthenticationResponse;
 import com.example.AtharamanBackend1.entity.User;
 import com.example.AtharamanBackend1.service.AuthenticationService;
+import com.example.AtharamanBackend1.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AuthenticationController {
 
     private final AuthenticationService authService;
 
-    public AuthenticationController(AuthenticationService authService) {
+
+    public AuthenticationController(AuthenticationService authService, UserService userService) {
         this.authService = authService;
     }
 
