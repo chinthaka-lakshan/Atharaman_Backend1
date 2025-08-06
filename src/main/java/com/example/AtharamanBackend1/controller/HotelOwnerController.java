@@ -17,10 +17,7 @@ public class HotelOwnerController {
     @Autowired
     private HotelOwnerService hotelOwnerService;
 
-    @PostMapping
-    public HotelOwnerDto createHotelOwner(@RequestBody HotelOwnerDto hotelOwnerDto){
-        return hotelOwnerService.createHotelOwner(hotelOwnerDto);
-    }
+
 
     @GetMapping
     public List<HotelOwnerDto> getAllHotelOwners(){

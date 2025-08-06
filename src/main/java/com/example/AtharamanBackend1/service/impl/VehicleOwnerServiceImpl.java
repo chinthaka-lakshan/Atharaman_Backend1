@@ -1,13 +1,13 @@
 package com.example.AtharamanBackend1.service.impl;
 
 import com.example.AtharamanBackend1.dto.VehicleOwnerDto;
-import com.example.AtharamanBackend1.entity.User;
-import com.example.AtharamanBackend1.entity.VehicleOwner;
+import com.example.AtharamanBackend1.dto.VehicleOwnerRequestDto;
+import com.example.AtharamanBackend1.entity.*;
 import com.example.AtharamanBackend1.repository.UserRepository;
 import com.example.AtharamanBackend1.repository.VehicleOwnerRepository;
+import com.example.AtharamanBackend1.repository.VehicleOwnerRequestRepository;
 import com.example.AtharamanBackend1.service.VehicleOwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +15,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class VehicleOwnerServiceImpl implements VehicleOwnerService {
+
     @Autowired
     private VehicleOwnerRepository vehicleOwnerRepository;
+
+    @Autowired
+    private VehicleOwnerRequestRepository vehicleOwnerRequestRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -100,4 +104,76 @@ public class VehicleOwnerServiceImpl implements VehicleOwnerService {
         return vehicleOwnerDto;
 
     }
+
+
+
+
+    @Override
+    public void submitVehicleOwnerRequest(VehicleOwnerRequestDto dto) {
+        User user = userRepository.findById(dto.getUser_id())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        VehicleOwnerRequest request = new VehicleOwnerRequest();
+        request.setId(dto.getId());
+        request.setVehicleOwnerName(dto.getVehicleOwnerName());
+        request.setPersonalNumber(dto.getPersonalNumber());
+        request.setBusinessMail(dto.getBusinessMail());
+        request.setWhatsappNumber(dto.getWhatsappNumber());
+        request.setDescription(dto.getDescription());
+        request.setLocations(dto.getLocations());
+        request.setUser(user);
+        request.setStatus(RequestStatus.PENDING);
+
+        vehicleOwnerRequestRepository.save(request);
+    }
+
+
+
+
+
+    @Override
+    public void approveVehicleOwnerRequest(Long requestId) {
+        VehicleOwnerRequest request = vehicleOwnerRequestRepository.findById(requestId)
+                .orElseThrow(() -> new RuntimeException("Vehicle Owner request not found"));
+
+        if (request.getStatus() != RequestStatus.PENDING) {
+            throw new RuntimeException("Request is already processed");
+        }
+
+        VehicleOwner vehicleOwner = new VehicleOwner();
+        //vehicleOwner.setId(request.getId());
+        vehicleOwner.setUser(request.getUser());
+        vehicleOwner.setVehicleOwnerName(request.getVehicleOwnerName());
+        vehicleOwner.setBusinessMail(request.getBusinessMail());
+        vehicleOwner.setPersonalNumber(request.getPersonalNumber());
+        vehicleOwner.setWhatsappNumber(request.getWhatsappNumber());
+        vehicleOwner.setLocations(request.getLocations());
+        vehicleOwner.setDescription(request.getDescription());
+
+        vehicleOwnerRepository.save(vehicleOwner);
+
+        request.setStatus(RequestStatus.APPROVED);
+        vehicleOwnerRequestRepository.save(request);
+
+
+    }
+
+    @Override
+    public List<VehicleOwnerRequestDto> getPendingVehicleOwnerRequests() {
+        List<VehicleOwnerRequest> requests = vehicleOwnerRequestRepository.findByStatus(RequestStatus.PENDING);
+
+        return requests.stream().map(req -> {
+            VehicleOwnerRequestDto dto = new VehicleOwnerRequestDto();
+            dto.setUser_id(req.getUser().getId());
+            dto.setId(req.getId());
+            dto.setVehicleOwnerName(req.getVehicleOwnerName());
+            dto.setWhatsappNumber(req.getWhatsappNumber());
+            dto.setBusinessMail(req.getBusinessMail());
+            dto.setPersonalNumber(req.getPersonalNumber());
+            dto.setLocations(req.getLocations());
+            dto.setDescription(req.getDescription());
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
 }
