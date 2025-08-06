@@ -6,7 +6,6 @@ import com.example.AtharamanBackend1.entity.Guide;
 import com.example.AtharamanBackend1.entity.GuideRequest;
 import com.example.AtharamanBackend1.entity.RequestStatus;
 import com.example.AtharamanBackend1.entity.User;
-import com.example.AtharamanBackend1.entity.Vehicle;
 import com.example.AtharamanBackend1.repository.GuideRepository;
 import com.example.AtharamanBackend1.repository.GuideRequestRepository;
 import com.example.AtharamanBackend1.repository.UserRepository;
@@ -224,6 +223,7 @@ public class GuideServiceImpl implements GuideService {
         return requests.stream().map(req -> {
             GuideRequestDto dto = new GuideRequestDto();
             dto.setUser_id(req.getUser().getId());
+            dto.setId(req.getId());
             dto.setGuideName(req.getGuideName());
             dto.setGuideNic(req.getGuideNic());
             dto.setBusinessMail(req.getBusinessMail());

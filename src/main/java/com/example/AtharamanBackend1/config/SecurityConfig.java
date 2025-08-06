@@ -48,15 +48,20 @@ public class SecurityConfig {
                                         "/refresh_token/**",
                                         "/api/guides/**",
                                         "/api/hotelOwners/**",
+                                        "/api/vehicleOwners/**",
+                                        "/api/shop_owners/**",
                                         "/api/admin/requests/**",
-                                        "/api/admin/requests/guide approve/**",
-                                        "/api/admin/requests/shopowner approve/**",
-                                        "/admin/guides/approve/**")
+                                        "/api/admin/requests/guide_approve/**",
+                                        "/api/admin/requests/hotel_owner_approve/**",
+                                        "/api/admin/requests/shopowner_approve/**",
+                                        "/api/admin/requests/vehicle_owner_approve/**",
+                                        "/admin/guides/approve/**",
+                                        "/api/admin/service_provider_register/**")
                                 .permitAll()
                                 .requestMatchers("/admin_only/**").hasAuthority("ADMIN")
                                 .requestMatchers("/guide_only/**").hasAuthority("GUIDE")
                                 .requestMatchers("/hoelowner/**").hasAuthority("HOTELOWNER")
-                                .requestMatchers("/vehicleowner/**").hasAuthority("VEHICLEOWNER")
+
                                 .requestMatchers("/so/**").hasAuthority("SHOPOWNER")
                                 .anyRequest()
                                 .authenticated()

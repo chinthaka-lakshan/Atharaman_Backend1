@@ -1,5 +1,7 @@
 package com.example.AtharamanBackend1.controller;
 
+import com.example.AtharamanBackend1.dto.HotelOwnerRequestDto;
+import com.example.AtharamanBackend1.dto.ShopOwnerRequestDto;
 import com.example.AtharamanBackend1.service.ShopOwnerService;
 import com.example.AtharamanBackend1.dto.ShopOwnerDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,6 @@ public class ShopOwnerController {
     @Autowired
     private ShopOwnerService shopOwnerService;
 
-    @PostMapping
-    public ShopOwnerDto addShopOwner(@RequestBody ShopOwnerDto shopOwnerDto) { return shopOwnerService.createShopOwner(shopOwnerDto);}
 
     @GetMapping
     public List<ShopOwnerDto> getAllShopOwners(){ return shopOwnerService.getAllShopOwners();}
@@ -31,5 +31,13 @@ public class ShopOwnerController {
     public ResponseEntity<String> deleteShopOwner(@PathVariable Long id) {
         shopOwnerService.deleteShopOwnerById(id);
         return ResponseEntity.ok("Success");
+    }
+
+
+
+    @PostMapping("/request")
+    public ResponseEntity<String> submitShopOwnerRequest(@RequestBody ShopOwnerRequestDto dto) {
+        shopOwnerService.submitShopOwnerRequest(dto);
+        return ResponseEntity.ok("Hotel Owner request submitted successfully.");
     }
 }

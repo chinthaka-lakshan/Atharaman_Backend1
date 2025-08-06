@@ -19,12 +19,7 @@ public class GuideController {
     @Autowired
     private GuideService guideService;
 
-    @PostMapping(consumes = "multipart/form-data")
-    public GuideDto createGuide(
-            @RequestPart("guide") GuideDto guideDto,
-            @RequestPart("images") MultipartFile[] images) throws IOException {
-        return guideService.createGuide(guideDto, images);
-    }
+
 
     @GetMapping
     public List<GuideDto> getAllGuides() {
