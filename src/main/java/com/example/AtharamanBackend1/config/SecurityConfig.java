@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         req->req.requestMatchers("/login/**",
                                         "/register/**",
+                                        "/api/user/**",
                                         "/refresh_token/**",
                                         "/api/guides/**",
                                         "/api/hotelOwners/**",
@@ -56,6 +57,7 @@ public class SecurityConfig {
                                         "/api/admin/requests/shopowner_approve/**",
                                         "/api/admin/requests/vehicle_owner_approve/**",
                                         "/admin/guides/approve/**",
+                                        "/api/admin/user/**",
                                         "/api/admin/service_provider_register/**")
                                 .permitAll()
                                 .requestMatchers("/admin_only/**").hasAuthority("ADMIN")

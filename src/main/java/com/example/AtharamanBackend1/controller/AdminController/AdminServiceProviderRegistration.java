@@ -1,4 +1,4 @@
-package com.example.AtharamanBackend1.controller;
+package com.example.AtharamanBackend1.controller.AdminController;
 
 import com.example.AtharamanBackend1.dto.GuideDto;
 import com.example.AtharamanBackend1.dto.HotelOwnerDto;
