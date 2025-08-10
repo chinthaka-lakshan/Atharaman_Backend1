@@ -1,9 +1,11 @@
 package com.example.AtharamanBackend1.service.impl;
 
+import com.example.AtharamanBackend1.dto.HotelOwnerRequestDto;
 import com.example.AtharamanBackend1.dto.ShopOwnerDto;
-import com.example.AtharamanBackend1.entity.ShopOwner;
-import com.example.AtharamanBackend1.entity.User;
+import com.example.AtharamanBackend1.dto.ShopOwnerRequestDto;
+import com.example.AtharamanBackend1.entity.*;
 import com.example.AtharamanBackend1.repository.ShopOwnerRepository;
+import com.example.AtharamanBackend1.repository.ShopOwnerRequestRepository;
 import com.example.AtharamanBackend1.repository.UserRepository;
 import com.example.AtharamanBackend1.service.ShopOwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ public class ShopOwnerServiceImpl implements ShopOwnerService {
 
     @Autowired
     private ShopOwnerRepository shopOwnerRepository;
+    @Autowired
+    private ShopOwnerRequestRepository shopOwnerRequestRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -95,4 +99,73 @@ public class ShopOwnerServiceImpl implements ShopOwnerService {
         }
         return dto;
     }
+
+
+    @Override
+    public void submitShopOwnerRequest(ShopOwnerRequestDto dto) {
+        User user = userRepository.findById(dto.getUser_id())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        ShopOwnerRequest request = new ShopOwnerRequest();
+        request.setId(dto.getId());
+        request.setShopOwnerName(dto.getShopOwnerName());
+        request.setShopOwnerNic(dto.getShopOwnerNic());
+        request.setBusinessMail(dto.getBusinessMail());
+        request.setContactNumber(dto.getContactNumber());
+
+        request.setUser(user);
+        request.setStatus(RequestStatus.PENDING);
+
+        shopOwnerRequestRepository.save(request);
+    }
+
+
+
+
+
+    @Override
+    public void approveShopOwnerRequest(Long requestId) {
+        ShopOwnerRequest request = shopOwnerRequestRepository.findById(requestId)
+                .orElseThrow(() -> new RuntimeException("Hotel Owner request not found"));
+
+        if (request.getStatus() != RequestStatus.PENDING) {
+            throw new RuntimeException("Request is already processed");
+        }
+
+        ShopOwner shopOwner = new ShopOwner();
+        shopOwner.setShopOwnerName(request.getShopOwnerName());
+        shopOwner.setUser(request.getUser());
+        shopOwner.setShopOwnerNic(request.getShopOwnerNic());
+        shopOwner.setBusinessMail(request.getBusinessMail());
+        shopOwner.setContactNumber(request.getContactNumber());
+
+        shopOwnerRepository.save(shopOwner);
+
+        request.setStatus(RequestStatus.APPROVED);
+        shopOwnerRequestRepository.save(request);
+
+
+    }
+
+    @Override
+    public List<ShopOwnerRequestDto> getPendingShopOwnerRequests() {
+        List<ShopOwnerRequest> requests = shopOwnerRequestRepository.findByStatus(RequestStatus.PENDING);
+
+        return requests.stream().map(req -> {
+            ShopOwnerRequestDto dto = new ShopOwnerRequestDto();
+            dto.setUser_id(req.getUser().getId());
+            dto.setId(req.getId());
+            dto.setShopOwnerName(req.getShopOwnerName());
+            dto.setShopOwnerNic(req.getShopOwnerNic());
+            dto.setBusinessMail(req.getBusinessMail());
+            dto.setContactNumber(req.getContactNumber());
+
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
 }
+
+
+
+
